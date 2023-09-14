@@ -1,0 +1,11 @@
+query getAllUserDetails{
+  users{
+    id
+    name
+    email
+    quotes {
+      postedBy
+      quote
+    }
+  }
+}
