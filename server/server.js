@@ -1,35 +1,26 @@
-import { ApolloServer, gql } from "apollo-server";
+import { ApolloServer } from "apollo-server";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
-import {users, quotes} from './dummyData.js'
+import {typeDefs} from './schema.js'
+import mongoose from "mongoose";
+import { MONGO_URI } from "./config.js";
+import './models/User.js'
+import { resolvers } from "./resolvers.js";
 
-const typeDefs = gql`
-  type Query {
-    users: [User]
-    quotes: [Quote]
-  }
 
-  type User {
-    id:ID
-    name: String
-    email: String
-    quotes: [Quote]
-  }
 
-  type Quote {
-    postedBy: ID
-    quote: String
-  }
-`;
+mongoose.connect(MONGO_URI, {
+  useNewUrlParser:true,
+  useUnifiedTopology: true,
+})
 
-const resolvers = {
-  Query: {
-    users: () => users,
-    quotes: () => quotes
-  },
-  User: {
-    quotes: (user)=> quotes.filter(quotes => quotes.postedBy === user.id)
-  }
-};
+mongoose.connection.on("connected", () => {
+  console.log("Database Connected Successfully")
+})
+
+mongoose.connection.on("error", (error) => {
+  console.log("Database Connection Error", error)
+})
+
 
 const server = new ApolloServer({
   typeDefs,
