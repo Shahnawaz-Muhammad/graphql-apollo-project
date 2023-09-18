@@ -1,10 +1,12 @@
 import { users, quotes } from "./dummyData.js";
 import mongoose from "mongoose";
-const User = mongoose.model("User");
-import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "./config.js";
-import bcrypt from 'bcryptjs';
-const saltRounds = 10; 
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+const saltRounds = 10;
+
+const User = mongoose.model("User");
+const Quote = mongoose.model("Quote");
 
 export const resolvers = {
   Query: {
@@ -25,7 +27,7 @@ export const resolvers = {
 
       const saveUser = new User({
         ...newUser,
-        password:hashedPassword,
+        password: hashedPassword,
       });
 
       return await saveUser.save();
@@ -42,9 +44,9 @@ export const resolvers = {
         user.password
       );
 
-      console.log(passwordMatch)
+      console.log(passwordMatch);
 
-    //   if (user.password != userLogin.password) {
+      //   if (user.password != userLogin.password) {
       if (!passwordMatch) {
         throw new Error("Email or Password is Invalid");
       }
@@ -52,6 +54,15 @@ export const resolvers = {
       const token = jwt.sign({ userId: user._id }, JWT_SECRET);
 
       return { token };
+    },
+    createQuote: async (_, { quote }, { userId }) => {
+      if (!userId) throw Error("User Must be logged in");
+      const newQuote = new Quote({
+        quote,
+        postedBy: userId,
+      });
+      await newQuote.save();
+      return "Quote Added Successfully";
     },
   },
 };
