@@ -33,16 +33,17 @@ import { resolvers } from "./resolvers.js";
 
 const context = ({ req }) => {
   const { authorization } = req.headers;
-  console.log("Authorization Header:", authorization); // Add this line for debugging
-  if (!authorization) {
+  // console.log("Authorization Header:", authorization); // Add this line for debugging
+  if (authorization !== "") {
     try {
       const { userId } = jwt.verify(authorization, JWT_SECRET);
-      console.log("Verified UserId:", userId); // Add this line for debugging
+      // console.log("Verified UserId:", userId); // Add this line for debugging
       return { userId };
     } catch (error) {
-      console.error("JWT Verification Error:", error); // Add this line for debugging
+      // console.error("JWT Verification Error:", error); // Add this line for debugging
     }
   }
+  else console.log("unauthorized user")
 };
 
 const server = new ApolloServer({
