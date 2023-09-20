@@ -12,8 +12,8 @@ export const resolvers = {
   Query: {
     users: async () => await User.find({}),
     user: async (_, {_id}) => await User.findOne({_id}),
-    quotes: async() => await Quote.find({}),
-    // iQuote: async (_, {postedBy}) => await Quote.findOne({postedBy})
+    quotes: async() => await Quote.find({}).populate("postedBy", "_id firstName"),
+    iquote: async (_, {postedBy}) => await Quote.findOne({postedBy})
   },
   User: {
     quotes: async(user) => await Quote.find({postedBy: user._id}) //quotes.filter((quotes) => quotes.postedBy === user._id),

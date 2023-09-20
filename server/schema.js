@@ -39,7 +39,18 @@ export const typeDefs = gql`
 
   type Query {
     users: [User]
-    quotes: [Quote]
+    quotes: [QuoteWithName]
     user(_id: ID!): User
+    iquote(postedBy: ID!):[Quote]
+  }
+
+  type QuoteWithName {
+    quote: String!
+    postedBy: NameAsId
+  }
+
+  type NameAsId {
+    _id: String
+    firstName: String
   }
 `;
