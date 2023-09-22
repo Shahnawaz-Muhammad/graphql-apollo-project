@@ -1,11 +1,15 @@
 import { useState } from "react";
 import logo from "../../assets/images/random-click-logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+// import AddProduct from "../add-product";
+import AddQuote from "../add-quote";
+
 
 const Navbar = () => {
   const [showProfile, setShowProfile] = useState(false);
   const [showMobileNav, setShowMobileNav] = useState(false);
-  const [isAuthenticated] = useState(false);
+  // const [isAuthenticated] = useState(false);
+  const [showModal, setShowModal] = useState(false)
 
   const navLinks = [
     { id: 1, title: "Home", url: "/" },
@@ -14,6 +18,9 @@ const Navbar = () => {
     { id: 4, title: "About us", url: "/about" },
     { id: 5, title: "Contact us", url: "/contact" },
   ];
+
+  const isAuthenticated = localStorage.getItem("token")
+  const navigate = useNavigate()
   return (
     <>
       <nav className="bg-gray-800">
@@ -82,6 +89,10 @@ const Navbar = () => {
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
               {isAuthenticated ? (
                 <>
+                <button type="button" className="px-4 py-2 bg-green-800 rounded-xl text-white mr-2"
+                onClick={() => setShowModal(!showModal)}>
+                  Add Quote
+                </button>
                   <button
                     type="button"
                     className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -132,15 +143,15 @@ const Navbar = () => {
                         aria-labelledby="user-menu-button"
                         tabIndex="-1"
                       >
-                        <a
-                          href="#"
+                        <Link
+                          to="/profile"
                           className="block px-4 py-2 text-sm text-gray-700"
                           role="menuitem"
                           tabIndex="-1"
                           id="user-menu-item-0"
                         >
                           Your Profile
-                        </a>
+                        </Link>
                         <a
                           href="#"
                           className="block px-4 py-2 text-sm text-gray-700"
@@ -150,15 +161,16 @@ const Navbar = () => {
                         >
                           Settings
                         </a>
-                        <a
-                          href="#"
+                        <button
+                          type="button"
                           className="block px-4 py-2 text-sm text-gray-700"
-                          role="menuitem"
-                          tabIndex="-1"
-                          id="user-menu-item-2"
+                          onClick={() => {
+                            localStorage.removeItem("token")
+                            navigate("/login")
+                          }}
                         >
                           Sign out
-                        </a>
+                        </button>
                       </div>
                     )}
                   </div>
@@ -202,6 +214,11 @@ const Navbar = () => {
           </div>
         )}
       </nav>
+
+      {/* {showModal && 
+      <AddProduct showModal={showModal} setShowModal={setShowModal}/>} */}
+      {showModal && 
+      <AddQuote showModal={showModal} setShowModal={setShowModal}/>}
     </>
   );
 };

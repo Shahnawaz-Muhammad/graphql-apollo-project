@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-// import Category from "../../components/category";
+import Category from "../../components/category";
 // import Hero from "../../components/hero";
 import { GET_ALL_QUOTES } from "../../utils/queries";
 
@@ -23,7 +23,7 @@ const Home = () => {
     <main>
       {/* <Hero /> */}
 
-      {/* <Category /> */}
+      <Category />
       <div className="w-full p-5 bg-gray-300 rounded-xl flex justify-center">
         <div className="w-full flex flex-col gap-3 max-w-screen-2xl">
           {data.quotes.map((item) => (

@@ -1,12 +1,16 @@
 import { useState } from "react";
 import logo from "../../assets/images/random-click-logo.png";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "@apollo/client";
+import { LOGIN_USER } from "../../utils/mutations";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    rememberMe: false, 
+    // rememberMe: false, 
   });
+  const navigate = useNavigate()
 
   const handleInputChange = (e) => {
     const {name, value, type, checked} = e.target;
@@ -17,13 +21,39 @@ const Login = () => {
     });
   };
 
+  const [loginUser, {loading, data, error}]=useMutation(LOGIN_USER)
+  if(data){
+    localStorage.setItem("token", data.user.token)
+    navigate("/")
+  }
+  // OR 
+
+  // const [loginUser, {loading, data, error}]=useMutation(LOGIN_USER, {
+  //   onCompleted(data){
+  //     localStorage.setItem("token", data.user.token)
+  //     navigate("/")
+  //   }
+  // })
+  
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(formData)
+    loginUser({
+      variables: {
+        userLogin: formData
+      }
+    })
   }
+
+  if (loading) return <h1>Loading...</h1>;
+
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+      {error && (
+          <div className="w-full flex justify-center bg-red-500 shadow-xl">
+            <h1 className="text-white">{error.message}</h1>
+          </div>
+        )}
         <a
           href="#"
           className="flex items-center mb-3 text-2xl font-semibold text-gray-900 dark:text-white"
@@ -76,7 +106,7 @@ const Login = () => {
                   required=""
                 />
               </div>
-              <div className="flex items-start">
+              {/* <div className="flex items-start">
                 <div className="flex items-center h-5">
                   <input
                     id="terms"
@@ -102,21 +132,21 @@ const Login = () => {
                     </a>
                   </label>
                 </div>
-              </div>
+              </div> */}
               <button
                 type="submit"
                 className="w-full text-white bg-gray-800 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
-                Create an account
+                {loading ? "Logging In" : "Login"}
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Already have an account?{" "}
-                <a
-                  href="#"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                Don&apos;t have an account?
+                <Link
+                  to="/signup"
+                  className="ml-1 font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
-                  Login here
-                </a>
+                  Signup here
+                </Link>
               </p>
             </form>
           </div>

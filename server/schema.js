@@ -20,6 +20,7 @@ export const typeDefs = gql`
     lastName: String!
     email: String!
     password: String!
+    acceptTerms: Boolean!
   }
 
   input UserLoginInput {
@@ -42,6 +43,8 @@ export const typeDefs = gql`
     quotes: [QuoteWithName]
     user(_id: ID!): User
     iquote(postedBy: ID!):[Quote]
+    profile: User
+
   }
 
   type QuoteWithName {

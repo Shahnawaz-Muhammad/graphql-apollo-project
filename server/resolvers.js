@@ -13,7 +13,13 @@ export const resolvers = {
     users: async () => await User.find({}),
     user: async (_, {_id}) => await User.findOne({_id}),
     quotes: async() => await Quote.find({}).populate("postedBy", "_id firstName"),
-    iquote: async (_, {postedBy}) => await Quote.findOne({postedBy})
+    iquote: async (_, {postedBy}) => await Quote.findOne({postedBy}),
+    profile: async(_, args, {userId}) => {
+      if(!userId ) {
+        throw new Error("You Must be logged in")
+      }
+      return await User.findOne({_id: userId})
+    }
   },
   User: {
     quotes: async(user) => await Quote.find({postedBy: user._id}) //quotes.filter((quotes) => quotes.postedBy === user._id),
