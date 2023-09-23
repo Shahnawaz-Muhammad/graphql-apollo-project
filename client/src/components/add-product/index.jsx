@@ -2,23 +2,29 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 
 const AddProduct = ({ setShowModal }) => {
-  const [productImage, setProductImage] = useState(null);
+  const [formData, setFormData] = useState({
+    title: "",
+    category: "",
+    description: "",
+    image: null,
+    price: "",
+  });
 
-  // const handleProductNameChange = (e) => {
-  //   setProductName(e.target.value);
-  // };
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    setFormData({
+      ...formData,
+      [name]: files ? files[0] : value,
+    });
+  };
 
-  // const handleProductDescriptionChange = (e) => {
-  //   setProductDescription(e.target.value);
-  // };
-
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    setProductImage(URL.createObjectURL(file));
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log(formData)
   };
   return (
     <>
-      <div className="absolute top-0 left-0 w-screen h-screen z-10 bg-transparent backdrop-blur-sm"></div>
+      <div className="absolute top-0 left-0 max-h-full w-screen h-full z-10 bg-transparent backdrop-blur-sm"></div>
       <div className="fixed top-0 left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex justify-center items-center">
         <div className="relative w-full max-w-xl max-h-full">
           <div className="relative bg-white rounded-lg shadow-xl dark:bg-gray-700">
@@ -48,44 +54,33 @@ const AddProduct = ({ setShowModal }) => {
               <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
                 Add New Product
               </h3>
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="relative z-0 w-full mb-6 group">
+                  <label htmlFor="title" className="block text-gray-600">
+                    Title
+                  </label>
                   <input
                     type="text"
-                    name="product_name"
-                    id="product_name"
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    name="title"
+                    id="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                    className="border-2 border-gray-300 p-2 w-full rounded block py-2.5 text-sm text-gray-900 bg-transparent  appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
                     required
                   />
-                  <label
-                    htmlFor="product_name"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >
-                    Product Name
-                  </label>
                 </div>
                 <div className="grid md:grid-cols-2 md:gap-6">
-                  <div className="relative z-0 w-full mb-6 group">
-                    <input
-                      type="text"
-                      name="price"
-                      id="price"
-                      className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                      placeholder=" "
-                      required
-                    />
-                    <label
-                      htmlFor="price"
-                      className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                    >
-                      Price
-                    </label>
-                  </div>
                   <div className=" z-0 w-full mb-6 group">
+                    <label htmlFor="category" className="block text-gray-600">
+                      Category
+                    </label>
                     <select
-                      id="countries"
-                      className=" border  text-gray-900 text-sm rounded-lg focus:outline-none block w-full p-2.5  dark:placeholder-gray-400 dark:text-white "
+                      id="category"
+                      name="category"
+                      value={formData.category}
+                      onChange={handleChange}
+                      className="border-2 border-gray-300 p-2.5 w-full rounded text-gray-900 text-sm focus:outline-none block  dark:placeholder-gray-400 dark:text-white "
                     >
                       <option>Select Category</option>
                       <option>Canada</option>
@@ -93,28 +88,42 @@ const AddProduct = ({ setShowModal }) => {
                       <option>Germany</option>
                     </select>
                   </div>
+                  <div className="relative z-0 w-full mb-6 group">
+                    <label htmlFor="price" className="block text-gray-600">
+                      Price
+                    </label>
+                    <input
+                      type="text"
+                      id="price"
+                      name="price"
+                      value={formData.price}
+                      onChange={handleChange}
+                      className="border-2 border-gray-300 p-2 w-full rounded block py-2.5 text-sm text-gray-900 bg-transparent  appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                      placeholder=" "
+                      required
+                    />
+                  </div>
                 </div>
 
                 <div className="relative z-0 w-full mb-6 group">
+                  <label htmlFor="description" className="block text-gray-600">
+                    Description
+                  </label>
                   <textarea
                     //   type="text-area"
-                    name="product_description"
+                    id="description"
+                    name="description"
                     rows="3"
-                    id="product_description"
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    value={formData.description}
+                    onChange={handleChange}
+                    className="border-2 border-gray-300 p-2 w-full rounded block  text-sm text-gray-900 bg-transparent  appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
                     required
                   />
-                  <label
-                    htmlFor="product_description"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >
-                    Product Description
-                  </label>
                 </div>
-                <div className="relative z-0 w-full mb-6 border group flex">
-                  <div className="flex justify-between p-3 ">
-                    <div className="w-2/3 flex flex-col">
+                <div className="relative z-0 w-full mb-6 border group flex  p-3 ">
+                  <div className="flex w-full">
+                    <div className="w-1/2 flex flex-col">
                       <label
                         className="block text-gray-700 text-sm font-bold mb-2"
                         htmlFor="productImage"
@@ -124,16 +133,17 @@ const AddProduct = ({ setShowModal }) => {
                       <input
                         className="appearance-none  py-2 px-3 leading-tight focus:outline-none focus:border-blue-500 border border-gray-200"
                         id="productImage"
+                        name="image"
                         type="file"
                         accept="image/*"
-                        onChange={handleImageUpload}
+                        onChange={handleChange}
                       />
                     </div>
-                    {productImage && (
+                    {formData.image && (
                       <div className="w-1/2 max-w-full h-20 flex justify-center">
                         <img
-                          className=" max-w-full max-h-full"
-                          src={productImage}
+                          className="max-w-full max-h-full"
+                          src={URL.createObjectURL(formData.image)}
                           alt="Product"
                         />
                       </div>

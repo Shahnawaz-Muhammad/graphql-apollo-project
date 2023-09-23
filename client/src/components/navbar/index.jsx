@@ -2,7 +2,8 @@ import { useState } from "react";
 import logo from "../../assets/images/random-click-logo.png";
 import { Link, useNavigate } from "react-router-dom";
 // import AddProduct from "../add-product";
-import AddQuote from "../add-quote";
+// import AddQuote from "../add-quote";
+import AddProduct from "../add-product";
 
 
 const Navbar = () => {
@@ -91,7 +92,7 @@ const Navbar = () => {
                 <>
                 <button type="button" className="px-4 py-2 bg-green-800 rounded-xl text-white mr-2"
                 onClick={() => setShowModal(!showModal)}>
-                  Add Quote
+                  Add Product
                 </button>
                   <button
                     type="button"
@@ -218,7 +219,7 @@ const Navbar = () => {
       {/* {showModal && 
       <AddProduct showModal={showModal} setShowModal={setShowModal}/>} */}
       {showModal && 
-      <AddQuote showModal={showModal} setShowModal={setShowModal}/>}
+      <AddProduct showModal={showModal} setShowModal={setShowModal}/>}
     </>
   );
 };

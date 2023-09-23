@@ -1,12 +1,14 @@
-import { users, quotes } from "./dummyData.js";
+// import { users, quotes } from "./dummyData.js";
 import mongoose from "mongoose";
 import { JWT_SECRET } from "./config.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+// import Product from "./models/product.js";
 const saltRounds = 10;
 
 const User = mongoose.model("User");
 const Quote = mongoose.model("Quote");
+const Product = mongoose.model("Product")
 
 export const resolvers = {
   Query: {
@@ -19,7 +21,8 @@ export const resolvers = {
         throw new Error("You Must be logged in")
       }
       return await User.findOne({_id: userId})
-    }
+    },
+    products: async() => await Product.find({})
   },
   User: {
     quotes: async(user) => await Quote.find({postedBy: user._id}) //quotes.filter((quotes) => quotes.postedBy === user._id),
@@ -71,6 +74,23 @@ export const resolvers = {
       });
       await newQuote.save();
       return "Quote Added Successfully";
+    },
+
+
+    addProduct: async(_, { title }, {userId}) => {
+      // Check if the user is authenticated
+      if (!userId) throw Error("User Must be logged in");
+
+      const newProduct = new Product({
+        title,
+        price, 
+        description,
+        image,
+        category
+        // postedBy: userId,
+      });
+      await newProduct.save();
+      return `${title} Added Successfully`;
     },
   },
 };
