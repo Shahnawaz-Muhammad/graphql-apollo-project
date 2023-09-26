@@ -32,6 +32,27 @@ export const typeDefs = gql`
     token: String!
   }
 
+  
+
+  type QuoteWithName {
+    quote: String!
+    postedBy: NameAsId
+  }
+
+  type NameAsId {
+    _id: String
+    firstName: String
+  }
+
+
+  type Product {
+    title: String
+    category: String
+    description: String
+    price: String
+  }
+
+
   type Mutation {
     signupUser(newUser: UserInput!): User
     loginUser(userLogin: UserLoginInput!): Token
@@ -44,16 +65,8 @@ export const typeDefs = gql`
     user(_id: ID!): User
     iquote(postedBy: ID!):[Quote]
     profile: User
+    products: [Product]
 
   }
 
-  type QuoteWithName {
-    quote: String!
-    postedBy: NameAsId
-  }
-
-  type NameAsId {
-    _id: String
-    firstName: String
-  }
 `;

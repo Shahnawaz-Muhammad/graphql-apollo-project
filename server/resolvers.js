@@ -3,12 +3,13 @@ import mongoose from "mongoose";
 import { JWT_SECRET } from "./config.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { users } from "./dummyData.js";
 // import Product from "./models/product.js";
 const saltRounds = 10;
 
 const User = mongoose.model("User");
-const Quote = mongoose.model("Quote");
 const Product = mongoose.model("Product")
+const Quote = mongoose.model("Quote");
 
 export const resolvers = {
   Query: {
@@ -22,7 +23,7 @@ export const resolvers = {
       }
       return await User.findOne({_id: userId})
     },
-    products: async() => await Product.find({})
+    products: () => users
   },
   User: {
     quotes: async(user) => await Quote.find({postedBy: user._id}) //quotes.filter((quotes) => quotes.postedBy === user._id),
@@ -77,20 +78,20 @@ export const resolvers = {
     },
 
 
-    addProduct: async(_, { title }, {userId}) => {
-      // Check if the user is authenticated
-      if (!userId) throw Error("User Must be logged in");
+    // addProduct: async(_, { title }, {userId}) => {
+    //   // Check if the user is authenticated
+    //   if (!userId) throw Error("User Must be logged in");
 
-      const newProduct = new Product({
-        title,
-        price, 
-        description,
-        image,
-        category
-        // postedBy: userId,
-      });
-      await newProduct.save();
-      return `${title} Added Successfully`;
-    },
+    //   const newProduct = new Product({
+    //     title,
+    //     price, 
+    //     description,
+    //     image,
+    //     category
+    //     // postedBy: userId,
+    //   });
+    //   await newProduct.save();
+    //   return `${title} Added Successfully`;
+    // },
   },
 };

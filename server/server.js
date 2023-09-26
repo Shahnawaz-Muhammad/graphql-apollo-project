@@ -20,6 +20,7 @@ mongoose.connection.on("error", (error) => {
 
 import "./models/Quotes.js";
 import "./models/User.js";
+import "./models/product.js"
 
 import { resolvers } from "./resolvers.js";
 

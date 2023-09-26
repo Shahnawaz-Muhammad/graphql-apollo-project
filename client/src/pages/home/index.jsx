@@ -24,14 +24,14 @@ const Home = () => {
       {/* <Hero /> */}
 
       <Category />
-      <div className="w-full p-5 bg-gray-300 rounded-xl flex justify-center">
-        <div className="w-full flex flex-col gap-3 max-w-screen-2xl">
+      <div className="w-full p-5 bg-gray-100 rounded-xl flex justify-center">
+        <div className="w-full mx-auto max-w-screen-xl px-4 py-10 m-4 md:flex md:flex-col md:gap-2 ">
           {data.quotes.map((item) => (
             <>
-              <div className="flex justify-between">
-                <h1>{item.quote}</h1>
-                <p>{item.postedBy._id}</p>
-                <p>{item.postedBy.firstName}</p>
+              <div className="flex flex-col gap-1 bg-gray-300 p-3 rounded-lg shadow-md shadow-gray-600">
+                <h1 className="text-2xl">&quot;{item.quote}&quot;</h1>
+                {/* <p>{item.postedBy._id}</p> */}
+                <p className="text-sm italic">{item.postedBy.firstName}~</p>
               </div>
             </>
           ))}
